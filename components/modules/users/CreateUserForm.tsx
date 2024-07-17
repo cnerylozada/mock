@@ -26,14 +26,18 @@ export const CreateUserForm = () => {
       <div>CreateUserForm</div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <input {...register("email")} className="border" />
+          <input
+            {...register("email")}
+            placeholder="email"
+            className="border"
+          />
           {errors.email && (
             <div className="text-xs text-red-500">{errors.email?.message}</div>
           )}
         </div>
 
         <div>
-          <input {...register("name")} className="border" />
+          <input {...register("name")} placeholder="name" className="border" />
           {errors.name && (
             <div className="text-xs text-red-500">{errors.name?.message}</div>
           )}

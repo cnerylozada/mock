@@ -2,6 +2,18 @@
 import prisma from "@/prisma/client";
 import { redirect } from "next/navigation";
 
+export const getUsersWithPagination = (
+  currentPage: number,
+  pageSize: number
+) => {
+  const offset = (currentPage - 1) * pageSize;
+  return prisma.user.findMany({
+    skip: offset,
+    take: pageSize,
+    orderBy: { createAt: "desc" },
+  });
+};
+
 export const createUser = async (userDto: { email: string; name: string }) => {
   const newUser = await prisma.user.create({
     data: {
