@@ -4,10 +4,16 @@ import { redirect } from "next/navigation";
 
 export const getUsersWithPagination = (
   currentPage: number,
-  pageSize: number
+  pageSize: number,
+  searchByName: string
 ) => {
   const offset = (currentPage - 1) * pageSize;
   return prisma.user.findMany({
+    where: {
+      name: {
+        contains: searchByName,
+      },
+    },
     skip: offset,
     take: pageSize,
     orderBy: { createAt: "desc" },

@@ -1,4 +1,5 @@
 import { Pagination } from "@/components/app/Pagination";
+import { Search } from "@/components/modules/users/Search";
 import prisma from "@/prisma/client";
 import { getUsersWithPagination } from "@/server-actions/users";
 import { getNumberPagesByElements } from "@/utils/utils";
@@ -9,14 +10,17 @@ const PAGE_SIZE = 3;
 export default async function UsersPage({
   searchParams,
 }: {
-  searchParams: { page: number };
+  searchParams: { page: number; query: string };
 }) {
   if (!searchParams?.page || isNaN(searchParams.page))
-    redirect("/users?page=1");
+    redirect("/users?page=1&query=");
 
   const page = searchParams.page;
-  const getUsersPromise = getUsersWithPagination(page, PAGE_SIZE);
-  const getTotalElementsPromise = prisma.user.count();
+  const query = searchParams.query;
+  const getUsersPromise = getUsersWithPagination(page, PAGE_SIZE, query);
+  const getTotalElementsPromise = prisma.user.count({
+    where: { name: { contains: query } },
+  });
   const [users, totalElements] = await Promise.all([
     getUsersPromise,
     getTotalElementsPromise,
@@ -30,6 +34,7 @@ export default async function UsersPage({
       <div>
         <Link href={"users/create"}>Create new user</Link>
       </div>
+      <Search />
       <div>{!users.length && <span>There are no elements</span>}</div>
       <div>
         {users.map((_) => (
