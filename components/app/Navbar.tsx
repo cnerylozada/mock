@@ -1,13 +1,30 @@
+import { auth, signOut } from "@/auth";
 import Link from "next/link";
 
-export const Navbar = () => {
+export const Navbar = async () => {
+  const session = await auth();
+
   return (
     <div className="mb-4 p-3 flex space-x-4 bg-yellow-300">
       <div>Navbar</div>
-      <div className="">
+      <div className="flex-grow flex space-x-4 justify-end">
         <div>
-          <Link href={"/users"}>Users</Link>
+          <Link href={"/products"}>Products</Link>
         </div>
+        <div>{!session && <Link href={"/login"}>Login</Link>}</div>
+        {session && (
+          <>
+            <div>{session?.user?.name}</div>
+            <form
+              action={async () => {
+                "use server";
+                await signOut({ redirectTo: "/login" });
+              }}
+            >
+              <button type="submit">Logout</button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
