@@ -1,8 +1,11 @@
-export default function DashboardPage() {
+import { auth } from "@/auth";
+
+export default async function DashboardPage() {
+  const session = await auth();
   return (
     <div>
       <div>DashboardPage</div>
-      <div></div>
+      <div>{JSON.stringify(session?.user, null, 4)}</div>
     </div>
   );
 }

@@ -28,7 +28,9 @@ export const CreateProductForm = ({
   const router = useRouter();
 
   const { canShowNotification, setCanShowNotification, renderNotification } =
-    useNotification();
+    useNotification(() => {
+      router.push("/products");
+    });
 
   const onSubmit: SubmitHandler<CreateProductDto> = async (data) => {
     await createProduct({
@@ -38,8 +40,6 @@ export const CreateProductForm = ({
       category: data.category,
     });
     setCanShowNotification(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    router.push("/products");
   };
 
   return (

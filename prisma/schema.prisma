@@ -23,6 +23,7 @@ model User {
   sessions      Session[]
   posts         Post[]
   profile       Profile?
+  password      String?
 
   @@map("users")
 }

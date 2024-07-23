@@ -1,13 +1,23 @@
-import { Notification } from "@/components/app/Notification";
+import { Notification, notificationType } from "@/components/app/Notification";
 import { useState } from "react";
 
-export const useNotification = () => {
+export const useNotification = (onSuccess?: () => void) => {
   const [canShowNotification, setCanShowNotification] = useState(false);
+
   return {
     canShowNotification,
     setCanShowNotification,
-    renderNotification: (operationType: "creation" | "edition") => (
-      <Notification operationType={operationType} />
+    renderNotification: (
+      operationType: notificationType,
+      errorMessage?: string
+    ) => (
+      <Notification
+        operationType={operationType}
+        canShowNotification
+        setCanShowNotification={setCanShowNotification}
+        onSuccess={onSuccess}
+        errorMessage={errorMessage}
+      />
     ),
   };
 };

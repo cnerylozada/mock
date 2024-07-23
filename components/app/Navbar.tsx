@@ -11,7 +11,16 @@ export const Navbar = async () => {
         <div>
           <Link href={"/products"}>Products</Link>
         </div>
-        <div>{!session && <Link href={"/login"}>Login</Link>}</div>
+        {!session && (
+          <>
+            <div>
+              <Link href={"/login"}>Login</Link>
+            </div>
+            <div>
+              <Link href={"/register"}>Register</Link>
+            </div>
+          </>
+        )}
         {session && (
           <>
             <div>{session?.user?.name}</div>
