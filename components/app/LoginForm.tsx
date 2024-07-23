@@ -33,6 +33,7 @@ export const LoginForm = () => {
       setErrorMessage(response?.error);
     } else {
       router.push(DEFAULT_LOGIN_REDIRECT);
+      router.refresh();
     }
   };
 

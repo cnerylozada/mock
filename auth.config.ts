@@ -21,7 +21,7 @@ export default {
     Credentials({
       async authorize(credentials) {
         const user = await getUserByEmail(credentials.email as string);
-        if (!user) return null;
+        if (!user) throw new Error("User not found!");
         const passwordMatch = await bcryptjs.compare(
           credentials.password as string,
           user.password!
