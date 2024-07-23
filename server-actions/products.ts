@@ -1,7 +1,6 @@
 "use server";
 import { CreateProductDto } from "@/components/modules/products/CreateProductForm";
 import prisma from "@/prisma/client";
-import { redirect } from "next/navigation";
 
 export const getProductsWithPagination = (
   currentPage: number,
@@ -30,5 +29,4 @@ export const createProduct = async (productDto: CreateProductDto) => {
       categories: { connect: { id: productDto.category } },
     },
   });
-  redirect("/products");
 };
