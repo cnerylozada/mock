@@ -2,7 +2,7 @@
 import { CreateProductDto } from "@/components/modules/products/CreateProductForm";
 import prisma from "@/prisma/client";
 
-export const getProductsWithPagination = (
+export const getProductsWithPaginationAction = (
   currentPage: number,
   pageSize: number,
   searchByName: string

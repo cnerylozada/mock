@@ -1,7 +1,7 @@
 import { Pagination } from "@/components/app/Pagination";
 import { Search } from "@/components/modules/products/Search";
 import prisma from "@/prisma/client";
-import { getProductsWithPagination } from "@/server-actions/products";
+import { getProductsWithPaginationAction } from "@/server-actions/products";
 import { getNumberPagesByElements } from "@/utils/utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -17,7 +17,11 @@ export default async function ProductsPage({
 
   const page = searchParams.page;
   const query = searchParams.query;
-  const getProductsPromise = getProductsWithPagination(page, PAGE_SIZE, query);
+  const getProductsPromise = getProductsWithPaginationAction(
+    page,
+    PAGE_SIZE,
+    query
+  );
   const getTotalElementsPromise = prisma.product.count({
     where: { name: { contains: query } },
   });

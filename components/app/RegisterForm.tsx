@@ -1,6 +1,6 @@
 "use client";
 import { useNotification } from "@/hooks/app";
-import { registerUser } from "@/server-actions/user";
+import { registerUserAction } from "@/server-actions/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<RegisterUser> = async (data) => {
     setCanShowNotification(false);
-    const response = await registerUser(data);
+    const response = await registerUserAction(data);
     setCanShowNotification(true);
     if (!!response.error) setErrorMessage(response.error);
   };
