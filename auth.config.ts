@@ -33,4 +33,28 @@ export default {
     Google,
     GitHub,
   ],
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = token.role!;
+      return session;
+    },
+  },
+  events: {
+    async linkAccount({ user }) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
 } satisfies NextAuthConfig;

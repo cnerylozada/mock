@@ -14,10 +14,10 @@ export const Navbar = async () => {
         {!session && (
           <>
             <div>
-              <Link href={"/login"}>Login</Link>
+              <Link href={"/auth/login"}>Login</Link>
             </div>
             <div>
-              <Link href={"/register"}>Register</Link>
+              <Link href={"/auth/register"}>Register</Link>
             </div>
           </>
         )}
@@ -27,7 +27,7 @@ export const Navbar = async () => {
             <form
               action={async () => {
                 "use server";
-                await signOut({ redirectTo: "/login" });
+                await signOut({ redirectTo: "/auth/login" });
               }}
             >
               <button type="submit">Logout</button>

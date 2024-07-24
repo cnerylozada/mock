@@ -6,9 +6,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { registerUserSchema } from "./RegisterForm";
 import { signInUserAction } from "@/server-actions/user";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useNotification } from "@/hooks/app";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 const schema = registerUserSchema.omit({ name: true });
 export type Login = z.infer<typeof schema>;
@@ -19,6 +19,14 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Login>({ mode: "all", resolver: zodResolver(schema) });
+  const loginError = useSearchParams();
+
+  useEffect(() => {
+    if (loginError.get("error")) {
+      setCanShowNotification(true);
+      setErrorMessage("Email already in use with different provider!");
+    }
+  }, [loginError]);
 
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
