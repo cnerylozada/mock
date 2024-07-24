@@ -22,7 +22,7 @@ export const registerUserAction = async (newUser: RegisterUser) => {
     },
   });
 
-  return { success: "Email sent!" };
+  return { success: "Check your email to verify your account!" };
 };
 
 export const signInUserAction = async (user: Login) => {

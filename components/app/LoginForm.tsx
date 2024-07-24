@@ -8,7 +8,7 @@ import { registerUserSchema } from "./RegisterForm";
 import { signInUserAction } from "@/server-actions/user";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/hooks/app";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 const schema = registerUserSchema.omit({ name: true });
 export type Login = z.infer<typeof schema>;
@@ -20,21 +20,24 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<Login>({ mode: "all", resolver: zodResolver(schema) });
 
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const { canShowNotification, setCanShowNotification, renderNotification } =
     useNotification();
 
-  const onSubmit: SubmitHandler<Login> = async (data) => {
-    const response = await signInUserAction(data);
+  const onSubmit: SubmitHandler<Login> = (data) => {
+    startTransition(async () => {
+      const response = await signInUserAction(data);
 
-    if (response?.error) {
-      setCanShowNotification(true);
-      setErrorMessage(response?.error);
-    } else {
-      router.push(DEFAULT_LOGIN_REDIRECT);
-      router.refresh();
-    }
+      if (response?.error) {
+        setCanShowNotification(true);
+        setErrorMessage(response?.error);
+      } else {
+        router.push(DEFAULT_LOGIN_REDIRECT);
+        router.refresh();
+      }
+    });
   };
 
   return (
@@ -92,7 +95,9 @@ export const LoginForm = () => {
               )}
             </div>
 
-            <input type="submit" />
+            <button type="submit" disabled={isPending}>
+              {isPending ? "Loading..." : "Sign in"}
+            </button>
           </form>
         </div>
       </div>

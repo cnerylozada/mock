@@ -7,13 +7,13 @@ export const Notification = ({
   canShowNotification,
   setCanShowNotification,
   onSuccess,
-  errorMessage,
+  bodyMessage,
 }: {
   operationType: notificationType;
   canShowNotification: boolean;
   setCanShowNotification: Dispatch<SetStateAction<boolean>>;
   onSuccess?: () => void;
-  errorMessage?: string;
+  bodyMessage?: string;
 }) => {
   useEffect(() => {
     const renderNotification = async () => {
@@ -38,7 +38,7 @@ export const Notification = ({
         <div>{operationType !== "error" ? "Exito" : "Error"}</div>
         {operationType === "creation" && <div>Creacion exitosa :D</div>}
         {operationType === "edition" && <div>Edicion exitosa :D</div>}
-        {!!errorMessage && <div>{errorMessage}</div>}
+        {!!bodyMessage && <div>{bodyMessage}</div>}
       </div>
     </div>
   );

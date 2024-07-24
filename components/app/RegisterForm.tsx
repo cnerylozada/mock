@@ -2,10 +2,10 @@
 import { useNotification } from "@/hooks/app";
 import { registerUserAction } from "@/server-actions/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
+import { notificationType } from "./Notification";
 
 export const registerUserSchema = z.object({
   name: z.string().min(5).max(10),
@@ -23,24 +23,32 @@ export const RegisterForm = () => {
     mode: "all",
     resolver: zodResolver(registerUserSchema),
   });
-  const [errorMessage, setErrorMessage] = useState("");
-  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [notificationMessage, setNotificationMessage] = useState<{
+    message: string;
+    type: notificationType;
+  }>({ message: "", type: "creation" });
   const { canShowNotification, setCanShowNotification, renderNotification } =
-    useNotification(() => {
-      router.push("/login");
-    });
+    useNotification();
 
-  const onSubmit: SubmitHandler<RegisterUser> = async (data) => {
-    setCanShowNotification(false);
-    const response = await registerUserAction(data);
-    setCanShowNotification(true);
-    if (!!response.error) setErrorMessage(response.error);
+  const onSubmit: SubmitHandler<RegisterUser> = (data) => {
+    startTransition(async () => {
+      const response = await registerUserAction(data);
+      setCanShowNotification(true);
+      if (!!response.error)
+        setNotificationMessage({ message: response.error, type: "error" });
+      if (response.success)
+        setNotificationMessage({ message: response.success, type: "creation" });
+    });
   };
 
   return (
     <>
       {canShowNotification &&
-        renderNotification(!!errorMessage ? "error" : "creation", errorMessage)}
+        renderNotification(
+          notificationMessage.type,
+          notificationMessage.message
+        )}
       <div className="w-9/12 mx-auto">
         <div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -84,7 +92,9 @@ export const RegisterForm = () => {
               )}
             </div>
 
-            <input type="submit" />
+            <button type="submit" disabled={isPending}>
+              {isPending ? "Loading..." : "Register"}
+            </button>
           </form>
         </div>
       </div>

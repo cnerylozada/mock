@@ -9,14 +9,14 @@ export const useNotification = (onSuccess?: () => void) => {
     setCanShowNotification,
     renderNotification: (
       operationType: notificationType,
-      errorMessage?: string
+      bodyMessage?: string
     ) => (
       <Notification
         operationType={operationType}
         canShowNotification
         setCanShowNotification={setCanShowNotification}
         onSuccess={onSuccess}
-        errorMessage={errorMessage}
+        bodyMessage={bodyMessage}
       />
     ),
   };
