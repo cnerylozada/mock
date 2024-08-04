@@ -1,13 +1,15 @@
 import { auth, signOut } from "@/auth";
 import Link from "next/link";
+import { ConnectWallet } from "../modules/wallet/ConnectWallet";
 
 export const Navbar = async () => {
   const session = await auth();
-
   return (
-    <div className="mb-4 p-3 flex space-x-4 bg-yellow-300">
-      <div>Navbar</div>
-      <div className="flex-grow flex space-x-4 justify-end">
+    <div className="mb-4 p-2 flex items-center space-x-4 bg-yellow-300">
+      <div>
+        <Link href={"/"}>Nextjs101</Link>
+      </div>
+      <div className="flex-grow space-x-4 flex items-center justify-end">
         <div>
           <Link href={"/products"}>Products</Link>
         </div>
@@ -34,6 +36,7 @@ export const Navbar = async () => {
             </form>
           </>
         )}
+        <ConnectWallet />
       </div>
     </div>
   );

@@ -23,6 +23,7 @@
     "react-dom": "^18",
     "react-email": "^2.1.6",
     "react-hook-form": "^7.52.1",
+    "thirdweb": "^5.43.2",
     "use-debounce": "^10.0.1",
     "zod": "^3.23.8"
   },
