@@ -1,10 +1,10 @@
 "use client";
 import { client } from "@/client";
-import { ConnectButton, useActiveAccount } from "thirdweb/react";
+import { mainnet, sepolia } from "thirdweb/chains";
+import { ConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
 
 export const ConnectWallet = () => {
-  const account = useActiveAccount();
   const wallets = [
     createWallet("io.metamask"),
     createWallet("com.coinbase.wallet"),
@@ -28,6 +28,8 @@ export const ConnectWallet = () => {
           },
         }}
         wallets={wallets}
+        chain={mainnet}
+        chains={[sepolia, mainnet]}
         recommendedWallets={recommendedWallets}
       />
     </div>

@@ -1,14 +1,18 @@
 "use client";
-import { useActiveAccount, useWalletBalance } from "thirdweb/react";
+import {
+  useActiveAccount,
+  useActiveWalletChain,
+  useWalletBalance,
+} from "thirdweb/react";
 import { client } from "@/client";
-import { mainnet, sepolia } from "thirdweb/chains";
 import { Account } from "thirdweb/wallets";
 
 const Balance = ({ account }: { account: Account }) => {
+  const currentChain = useActiveWalletChain();
   const { data: balance, isLoading } = useWalletBalance({
     client,
-    chain: mainnet,
     address: account.address,
+    chain: currentChain,
   });
   return (
     <div>
