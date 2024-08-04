@@ -2,6 +2,7 @@
 import {
   useActiveAccount,
   useActiveWalletChain,
+  useConnectModal,
   useWalletBalance,
 } from "thirdweb/react";
 import { client } from "@/client";

@@ -1,12 +1,10 @@
 import { Greeter } from "@/components/modules/contracts/Greeter";
 import { WalletDetails } from "@/components/modules/wallet/WalletDetails";
 
-export default async function Home() {
+export default function Home() {
   return (
-    <main className="">
-      <div>Home</div>
+    <main>
       <WalletDetails />
-
       <Greeter />
     </main>
   );

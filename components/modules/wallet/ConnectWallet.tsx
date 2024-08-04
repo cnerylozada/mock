@@ -28,7 +28,7 @@ export const ConnectWallet = () => {
           },
         }}
         wallets={wallets}
-        chain={mainnet}
+        chain={sepolia}
         chains={[sepolia, mainnet]}
         recommendedWallets={recommendedWallets}
       />
