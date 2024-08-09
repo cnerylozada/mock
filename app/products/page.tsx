@@ -5,6 +5,7 @@ import { getProductsWithPaginationAction } from "@/server-actions/products";
 import { getNumberPagesByElements } from "@/utils/utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 const PAGE_SIZE = 3;
 export default async function ProductsPage({
@@ -44,7 +45,12 @@ export default async function ProductsPage({
       <div>
         {products.map((_) => (
           <div key={_.id}>
-            Name:{_.name} Price: {_.price}
+            <div>
+              Name:{_.name} Price: {_.price}
+            </div>
+            <div className="prose">
+              <ReactMarkdown>{_.description}</ReactMarkdown>
+            </div>
           </div>
         ))}
       </div>

@@ -28,7 +28,7 @@ export const Greeter = () => {
   });
 
   const [greetings, setGreetings] = useState("");
-  const { mutate, data, isPending, isSuccess, status } = useSendTransaction();
+  const { mutate, data, isPending, isSuccess } = useSendTransaction();
   const onSetGreeting = (_greeting: string) => {
     const transaction = prepareContractCall({
       contract,

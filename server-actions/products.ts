@@ -24,6 +24,7 @@ export const createProduct = async (productDto: CreateProductDto) => {
   await prisma.product.create({
     data: {
       name: productDto.name,
+      description: productDto.description,
       price: productDto.price,
       stock: productDto.stock,
       categories: { connect: { id: productDto.category } },
