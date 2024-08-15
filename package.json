@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.17.0",
     "@react-email/components": "^0.0.22",
+    "@vis.gl/react-google-maps": "^1.1.0",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "easymde": "^2.18.0",

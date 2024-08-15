@@ -4,7 +4,8 @@ import { Book } from "@prisma/client";
 export default async function SearchPage() {
   const table = "Book";
   const word = "YUELA";
-  const xxx = await prisma.book.findFirst({ where: { fussion: "" } });
+  const xxx = await prisma.book.findMany();
+  console.log("xxx", xxx);
 
   const books: Book[] = await prisma.$queryRawUnsafe(
     `SELECT * FROM (
