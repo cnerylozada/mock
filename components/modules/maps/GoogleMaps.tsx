@@ -4,16 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { UserMapType } from "./BasicForm";
 
-interface PlaceAutocompleteProps {
-  onPlaceSelect: (place: string | undefined) => void;
-  defaultValue?: string;
+interface Props {
+  onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
   setValue: UseFormSetValue<UserMapType>;
+  defaultValue?: string;
 }
 const PlaceAutocomplete = ({
   onPlaceSelect,
-  defaultValue,
   setValue,
-}: PlaceAutocompleteProps) => {
+  defaultValue,
+}: Props) => {
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,27 +21,34 @@ const PlaceAutocomplete = ({
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
-    setPlaceAutocomplete(new places.Autocomplete(inputRef.current));
+
+    const options = {
+      fields: ["geometry", "name", "formatted_address", "address_components"],
+    };
+
+    setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
   }, [places]);
 
   useEffect(() => {
-    if (!placeAutocomplete) {
-      return;
-    }
+    if (!placeAutocomplete) return;
+
     placeAutocomplete.addListener("place_changed", () => {
-      onPlaceSelect(placeAutocomplete.getPlace().formatted_address);
+      onPlaceSelect(placeAutocomplete.getPlace());
     });
   }, [onPlaceSelect, placeAutocomplete]);
 
   return (
-    <input
-      ref={inputRef}
-      className="w-full p-1 border"
-      onBlur={(_) => {
-        setValue("address", "");
-      }}
-      defaultValue={defaultValue}
-    />
+    <div className="autocomplete-container">
+      <input
+        ref={inputRef}
+        onBlur={() => {
+          console.log("onBlur ...");
+          setValue("address", "");
+        }}
+        className="w-full p-1 border"
+        defaultValue={defaultValue}
+      />
+    </div>
   );
 };
 
@@ -52,13 +59,15 @@ export const GoogleMapsLoader = ({
   setValue: UseFormSetValue<UserMapType>;
   defaultValue?: string;
 }) => {
-  const [selectedPlace, setSelectedPlace] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedPlace, setSelectedPlace] =
+    useState<google.maps.places.PlaceResult | null>();
 
   useEffect(() => {
-    if (selectedPlace) {
-      setValue("address", selectedPlace, { shouldValidate: true });
+    if (selectedPlace?.formatted_address) {
+      console.log("setting value ...");
+      setValue("address", selectedPlace.formatted_address, {
+        shouldValidate: true,
+      });
     }
   }, [selectedPlace]);
 
@@ -67,11 +76,7 @@ export const GoogleMapsLoader = ({
       apiKey={"AIzaSyD56xdTaNKwLdDvnIcPsDNZ9McVA1Wg5Bo"}
       solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
     >
-      <PlaceAutocomplete
-        onPlaceSelect={setSelectedPlace}
-        defaultValue={defaultValue}
-        setValue={setValue}
-      />
+      <PlaceAutocomplete onPlaceSelect={setSelectedPlace} setValue={setValue} />
     </APIProvider>
   );
 };
