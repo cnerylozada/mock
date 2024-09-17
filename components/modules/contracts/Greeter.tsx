@@ -3,7 +3,7 @@ import { client } from "@/client";
 import { formatAddresss } from "@/utils/utils";
 import { useState } from "react";
 import { getContract, prepareContractCall } from "thirdweb";
-import { sepolia } from "thirdweb/chains";
+import { hardhat } from "thirdweb/chains";
 import {
   useActiveAccount,
   useReadContract,
@@ -11,10 +11,11 @@ import {
 } from "thirdweb/react";
 
 export const Greeter = () => {
+  const greeterContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const contract = getContract({
     client,
-    chain: sepolia,
-    address: "0xaB8b71C581774F91E2F3f98b8036F6B3F9C87524",
+    chain: hardhat,
+    address: greeterContractAddress,
   });
 
   const {

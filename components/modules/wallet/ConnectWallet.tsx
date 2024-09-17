@@ -1,6 +1,6 @@
 "use client";
 import { client } from "@/client";
-import { mainnet, sepolia } from "thirdweb/chains";
+import { hardhat, mainnet, sepolia } from "thirdweb/chains";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
 
@@ -28,8 +28,8 @@ export const ConnectWallet = () => {
           },
         }}
         wallets={wallets}
-        chain={sepolia}
-        chains={[sepolia, mainnet]}
+        // chain={sepolia}
+        chains={[sepolia, mainnet, hardhat]}
         recommendedWallets={recommendedWallets}
       />
     </div>
